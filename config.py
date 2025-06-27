@@ -6,6 +6,7 @@ class Config:
     DEBUG = os.environ.get('FLASK_DEBUG', 'False') == 'True'
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', 'sqlite:///app.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    CSRF_ENABLED = False
 
 # Usage in your Flask app:
 # from config import Config

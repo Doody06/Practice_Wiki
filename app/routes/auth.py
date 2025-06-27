@@ -15,22 +15,28 @@ def login():
             login_user(user)
             flash('Login successful', 'success')
             return redirect(url_for('admin.dashboard'))
-    return render_template('auth/login.html', form=form)
+    return render_template('login.html', form=form)
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
-    if form.validate_on_submit():
+    if form.validate_on_submit(): #learn how this works
         user = User(username=form.username.data, email=form.email.data)
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
+        print("User registered successfully")
         return redirect(url_for('auth.login')) #temporarily redirect to login after registration
-    return render_template('auth/register.html', form=form)
+    else:
+        print("Registration failed")
+        for field, errors in form.errors.items():
+            for error in errors:
+                flash(f'Error in {getattr(form, field).label.text}: {error}', 'danger')
+    return render_template('register.html', form=form)
 
 @bp.route('/logout') 
 @login_required  
 def logout():
     logout_user()
-    return redirect(url_for('auth.login'))  
+    return redirect(url_for('login.html'))  
     
