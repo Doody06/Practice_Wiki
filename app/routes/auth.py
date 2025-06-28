@@ -11,14 +11,16 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
-        if user and User.check_password(User, user.password, form.password.data):
+        if user and User.check_password(user, form.password.data):
             login_user(user)
             flash('Login successful', 'success')
             return redirect(url_for('admin.dashboard'))
+        else:
+            flash('Invalid username or password', 'danger')
     return render_template('login.html', form=form)
 
 @bp.route('/register', methods=['GET', 'POST'])
-def register():
+def register_admin():
     form = RegistrationForm()
     if form.validate_on_submit(): #learn how this works
         user = User(username=form.username.data, email=form.email.data)

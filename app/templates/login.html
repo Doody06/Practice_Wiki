@@ -6,6 +6,7 @@
 <div class="container mt-5">
     <h1>Login</h1>
     <form method="POST" action="{{ url_for('auth.login') }}">
+          {{ form.csrf_token}}
         <div class="mb-3">
             <label for="username" class="form-label">Username</label>
             <input type="text" class="form-control" id="username" name="username" required>
@@ -16,5 +17,16 @@
         </div>
         <button type="submit" class="btn btn-primary">Login</button>
     </form>
+</div>
+<div>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for messages in messages %}
+    <div class="alert alert-info mt-3">
+        {{ messages }}
+        {% endfor %}
+        </div>
+    {% endif %}
+    {% endwith %}
 </div>
 {%endblock%}
