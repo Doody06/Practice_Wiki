@@ -17,4 +17,19 @@ class User(db.Model, UserMixin):
 
     def __repr__(self):
         return f'<User {self.username}>'
+
+class Page(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(200), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    slug = db.Column(db.String(200), unique=True, nullable=False)
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
+    updated_at = db.Column(db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    author = db.relationship('User', backref=db.backref('pages', lazy=True))
+    
+    def slugify(title):
+        return title.lower().replace(' ', '-').replace('/', '-').replace('\\', '-')
+    def __repr__(self):
+        return f'<Page {self.title}>'
     
