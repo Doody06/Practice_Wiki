@@ -16,4 +16,14 @@ def home():
 def all_pages():
     from app.models import Page
     pages = Page.query.all()
-    return render_template('all_pages.html', pages=pages)
+    if current_user.is_authenticated:
+        is_admin = current_user.is_admin
+    else:
+        is_admin = False
+    return render_template('all_pages.html', pages=pages, is_admin=is_admin)
+
+@bp.route('/page/<slug>')
+def view_page(slug):
+    from app.models import Page
+    page = Page.query.filter_by(slug=slug).first_or_404()
+    return render_template('page.html', page=page)

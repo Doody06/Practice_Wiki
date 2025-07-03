@@ -1,18 +1,43 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>All Pages</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block title %}All Pages{% endblock %}
+
+{% block content %}
     <h1>All Pages</h1>
     <ul>
         {% for page in pages %}
             <li>
-                <a href="{{ url_for('view_page', title=page.title) }}">{{ page.title }}</a>
+                <a href="{{ url_for('user.view_page', slug=page.slug) }}">{{ page.title }}</a>
+                {% if is_admin == True %}
+                    <a href="{{ url_for('admin.edit_page', slug=page.slug) }}">Edit</a>
+                    <form id="delete-form-{{ page.slug }}" action="{{ url_for('admin.delete_page', slug=page.slug) }}" method="post" style="display:inline;">
+                        <button type="button" onclick="deletePage('{{ page.slug }}')" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                {% endif %}
             </li>
         {% else %}
             <li>No pages found.</li>
         {% endfor %}
     </ul>
-</body>
-</html>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function getCSRFToken() {
+    return document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+}
+
+function deletePage(slug) {
+    fetch(`/delete_page/${slug}`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCSRFToken()
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            window.location.reload();
+        }
+    });
+}
+</script>
+{% endblock %}

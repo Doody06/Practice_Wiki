@@ -4,4 +4,7 @@
 <div class="container mt-5">
     <h1>Dashboard</h1>
     <p>Welcome to your dashboard, {{ username }}</p>
+    <div>
+        <a href="{{ url_for('admin.new_page') }}" class="btn btn-primary">Create new page</a>
+    </div>
 {% endblock %}
