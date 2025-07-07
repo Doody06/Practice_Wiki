@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Edit Suggestion{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <form method="POST" action="{{ url_for('user.suggest_page_edit', slug=page.slug) }}">
+        {{ form.hidden_tag() }}
+        <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            {{ form.title(class="form-control", placeholder="Enter page title", value=page.title) }}
+        </div>
+        <div class="mb-3">
+            <label for="content" class="form-label">Content</label>
+            {{ form.content(class="form-control", rows=5, placeholder="Enter page content") }}
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    document.getElementsByName("content")[0].value = `{{ page.content | e }}`;
+                });
+            </script>
+        </div>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+</div>
+
+{% endblock %}

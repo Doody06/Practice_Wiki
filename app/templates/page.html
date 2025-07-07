@@ -7,4 +7,14 @@
     <div class="content">
         {{ page.content | safe }}
     </div>
+    <div class="metadata">
+        <p>Last edited by: {{ page.last_edited_by }}</p>
+        <p>Last edited on: {{ page.last_edited_at }}</p>
+    <div class="suggest-edit">
+        <form action="{{ url_for('user.suggest_page_edit', slug=page.slug) }}" method="get">
+            <button type="submit">Suggest an Edit</button>
+        </form>
+    </div>
+   
+            </div>
 {% endblock %}

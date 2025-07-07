@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}{{ suggestion_title }}{% endblock %}
+
+{% block content %}
+    <h1>{{ suggestion.title }}</h1>
+    <div class="content">
+        {{ suggestion.content | safe }}
+    </div>
+    <div class="metadata">
+        <p>Last edited by: {{ suggestion.last_edited_by }}</p>
+        <p>Last edited on: {{ suggestion.last_edited_at }}</p>
+    <div class="suggest-edit">
+   
+        <form action="{{ url_for('admin.accept_suggestion', suggestion_id=suggestion.id) }}" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit">Accept Suggestion</button>
+        </form>
+        <form action="{{ url_for('admin.reject_suggestion', suggestion_id=suggestion.id) }}" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit">Reject Suggestion</button>
+        </form>
+    </div>
+{% endblock %}

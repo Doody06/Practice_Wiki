@@ -33,3 +33,16 @@ class Page(db.Model):
     def __repr__(self):
         return f'<Page {self.title}>'
     
+class Suggestion(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    page_id = db.Column(db.Integer, db.ForeignKey('page.id'), nullable=False)
+    title = db.Column(db.String(200), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
+    page = db.relationship('Page', backref=db.backref('suggestions', lazy=True))
+    suggested_by_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    suggested_by = db.relationship('User', backref=db.backref('suggestions', lazy=True))
+    
+    def __repr__(self):
+        return f'<Suggestion {self.title} for Page {self.page_id}>'
+    

@@ -18,3 +18,4 @@ class NewPageForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired(), Length(max=200)])
     content = StringField('Content', validators=[DataRequired()])
     submit = SubmitField('Create Page')
+    

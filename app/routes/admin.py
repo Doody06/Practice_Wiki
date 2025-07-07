@@ -1,4 +1,3 @@
-
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import current_user, login_required
 from app.decorators import admin_required
@@ -52,3 +51,38 @@ def delete_page(slug):
     db.session.delete(page)
     db.session.commit()
     return '', 204
+
+@admin_required
+@bp.route('/accept_suggestion/<suggestion_id>', methods=['POST', 'GET'])
+def accept_suggestion(suggestion_id):
+    from app.models import Suggestion
+    suggestion = Suggestion.query.get_or_404(suggestion_id) 
+    page = suggestion.page
+    page.title = suggestion.title
+    page.content = suggestion.content
+    db.session.delete(suggestion)
+    db.session.commit()
+    return redirect(url_for('admin.dashboard'))
+
+@admin_required
+@bp.route('/reject_suggestion/<suggestion_id>', methods=['POST', 'GET'])
+def reject_suggestion(suggestion_id):
+    from app.models import Suggestion
+    suggestion = Suggestion.query.get_or_404(suggestion_id)
+    db.session.delete(suggestion)
+    db.session.commit()
+    return redirect(url_for('admin.dashboard'))
+
+@admin_required
+@bp.route('/view_page_suggestions')
+def view_page_suggestions():
+    from app.models import Suggestion
+    suggestions = Suggestion.query.all()
+    return render_template('view_page_suggestions.html', suggestions=suggestions)
+
+@admin_required
+@bp.route('/view_suggestion/<slug>/<suggestion_id>')
+def view_suggestion(suggestion_id, slug):
+    from app.models import Suggestion
+    suggestion = Suggestion.query.filter_by().first_or_404()
+    return render_template('view_suggestion.html', suggestion=suggestion)
