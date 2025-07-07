@@ -48,9 +48,12 @@ def edit_page(slug):
 @bp.route('/delete_page/<slug>', methods=['GET', 'POST'])
 def delete_page(slug):
     page = Page.query.filter_by(slug=slug).first_or_404()
-    db.session.delete(page)
-    db.session.commit()
-    return '', 204
+    if request.method == 'POST':
+        for i in page.suggestions:
+            db.session.delete(i)
+        db.session.delete(page)
+        db.session.commit()
+        return redirect(url_for('user.all_pages'))
 
 @admin_required
 @bp.route('/accept_suggestion/<suggestion_id>', methods=['POST', 'GET'])
