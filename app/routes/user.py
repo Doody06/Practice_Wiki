@@ -30,7 +30,11 @@ def view_page(slug):
     from app.forms import CommentForm
     form = CommentForm()
     comments = Comment.query.filter_by(page_id=page.id).all()
-    return render_template('page.html', page=page, form=form, comments=comments)
+    if current_user.is_authenticated:
+        is_admin = current_user.is_admin
+    else:
+        is_admin = False
+    return render_template('page.html', page=page, form=form, comments=comments, is_admin=is_admin)
 
 @login_required
 @bp.route('/suggest_page_edit/<slug>', methods=['GET', 'POST'])

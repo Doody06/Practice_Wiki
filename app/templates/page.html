@@ -21,6 +21,11 @@
             <ul>
                 {% for comment in comments %}
                     <li>{{ comment.content }} - <em>by {{ comment.author }} on {{ comment.created_at }}</em></li>
+                    {% if is_admin %}
+                        <form action="{{ url_for('admin.delete_comment', comment_id=comment.id) }}" methods="post">
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    {% endif %}
                 {% endfor %}
             </ul>
         {% else %}
@@ -36,4 +41,5 @@
                 {{ form.content(class="form-control", rows=3, placeholder="Enter your comment here") }}
             <button type="submit" class="btn btn-primary mt-2">Submit</button>
     </div>
+
 {% endblock %}

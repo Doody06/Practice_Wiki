@@ -89,3 +89,13 @@ def view_suggestion(suggestion_id, slug):
     from app.models import Suggestion
     suggestion = Suggestion.query.filter_by().first_or_404()
     return render_template('view_suggestion.html', suggestion=suggestion)
+
+@admin_required
+@bp.route('/delete_comment/<comment_id>', methods=['POST', 'GET'])
+def delete_comment(comment_id):
+    from app.models import Comment
+    comment = Comment.query.get_or_404(comment_id)
+    slug = comment.page.slug
+    db.session.delete(comment)
+    db.session.commit()
+    return redirect(url_for('user.view_page', slug=slug))
