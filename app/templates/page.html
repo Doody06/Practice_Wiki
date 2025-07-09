@@ -15,6 +15,25 @@
             <button type="submit">Suggest an Edit</button>
         </form>
     </div>
-   
-            </div>
+    <div>
+        <h2>Comments</h2>
+        {% if comments %}
+            <ul>
+                {% for comment in comments %}
+                    <li>{{ comment.content }} - <em>by {{ comment.author }} on {{ comment.created_at }}</em></li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No comments yet, be the first to comment?</p>
+        {% endif %}
+    </div>
+    <div class="container mt-5">
+        <h2>Add a comment</h2>
+        <form action="{{ url_for('user.comment_on_page', slug=page.slug) }}" method="post">
+            {{form.hidden_tag()}}
+            <div class="mb-3">
+                <label for="content" class="form-label">Comment</label>
+                {{ form.content(class="form-control", rows=3, placeholder="Enter your comment here") }}
+            <button type="submit" class="btn btn-primary mt-2">Submit</button>
+    </div>
 {% endblock %}

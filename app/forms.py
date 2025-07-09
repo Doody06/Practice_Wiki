@@ -19,3 +19,7 @@ class NewPageForm(FlaskForm):
     content = StringField('Content', validators=[DataRequired()])
     submit = SubmitField('Create Page')
     
+class CommentForm(FlaskForm):
+    content = StringField('Comment', validators=[DataRequired()])
+    submit = SubmitField('Post Comment')
+    

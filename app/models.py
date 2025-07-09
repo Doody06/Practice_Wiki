@@ -46,3 +46,15 @@ class Suggestion(db.Model):
     def __repr__(self):
         return f'<Suggestion {self.title} for Page {self.page_id}>'
     
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    page_id = db.Column(db.Integer, db.ForeignKey('page.id'), nullable=False)
+    page = db.relationship('Page', backref=db.backref('comments', lazy=True))
+    content = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    author = db.relationship('User', backref=db.backref('comments', lazy=True))
+    
+    def __repr__(self):
+        return f'<Comment by {self.author.username} on Page {self.page_od}>'
+    

@@ -25,9 +25,12 @@ def all_pages():
 
 @bp.route('/page/<slug>')
 def view_page(slug):
-    from app.models import Page
+    from app.models import Page, Comment
     page = Page.query.filter_by(slug=slug).first_or_404()
-    return render_template('page.html', page=page)
+    from app.forms import CommentForm
+    form = CommentForm()
+    comments = Comment.query.filter_by(page_id=page.id).all()
+    return render_template('page.html', page=page, form=form, comments=comments)
 
 @login_required
 @bp.route('/suggest_page_edit/<slug>', methods=['GET', 'POST'])
@@ -52,3 +55,22 @@ def suggest_page_edit(slug):
             return redirect(url_for('user.view_page', slug=slug))
     
     return render_template('suggest_page_edit.html', form=form, page=page)
+
+@login_required
+@bp.route('/comment/<slug>/', methods=['POST'])
+def comment_on_page(slug):
+    from app.models import Page, Comment
+    from app.forms import CommentForm
+    from app import db
+    page = Page.query.filter_by(slug=slug).first_or_404()
+    form = CommentForm()
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            content = form.content.data
+            comment = Comment(content=content, page=page, author=current_user)
+            db.session.add(comment)
+            db.session.commit()
+            flash('Comment added successfully!', 'success')
+        else:
+            flash('Error adding comment. Please try again.', 'error')
+    return redirect(url_for('user.view_page', slug=slug, form=form))
