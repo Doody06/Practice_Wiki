@@ -33,10 +33,12 @@ def new_page():
 @admin_required
 @bp.route('/edit_page/<slug>', methods=['GET', 'POST'])
 def edit_page(slug):
+    from app.models import PageVersion
     page = Page.query.filter_by(slug=slug).first_or_404()
     form = NewPageForm(obj=page)
     if request.method == 'POST':
         if form.validate_on_submit():
+            db.session.add(PageVersion(title=page.title, content=page.content, page_id=page.id, author=current_user))
             page.title = request.form.get('title')
             page.content = request.form.get('content')
             page.slug = Page.slugify(page.title)
@@ -51,6 +53,10 @@ def delete_page(slug):
     if request.method == 'POST':
         for i in page.suggestions:
             db.session.delete(i)
+        for version in page.versions:
+            db.session.delete(version)
+        for comment in page.comments:
+            db.session.delete(comment)
         db.session.delete(page)
         db.session.commit()
         return redirect(url_for('user.all_pages'))
@@ -58,8 +64,10 @@ def delete_page(slug):
 @admin_required
 @bp.route('/accept_suggestion/<suggestion_id>', methods=['POST', 'GET'])
 def accept_suggestion(suggestion_id):
-    from app.models import Suggestion
+    from app.models import Suggestion, PageVersion
     suggestion = Suggestion.query.get_or_404(suggestion_id) 
+    page = Page.query.get_or_404(suggestion.page_id)
+    db.session.add(PageVersion(title=page.title, content=page.content, page_id=page.id, author=current_user))
     page = suggestion.page
     page.title = suggestion.title
     page.content = suggestion.content

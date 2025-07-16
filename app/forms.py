@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, EmailField
+from wtforms import StringField, PasswordField, SubmitField, EmailField, TextAreaField
 from wtforms.validators import DataRequired, Email, EqualTo, Length
+import markdown2
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=3, max=25)])
@@ -16,7 +17,7 @@ class RegistrationForm(FlaskForm):
 
 class NewPageForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired(), Length(max=200)])
-    content = StringField('Content', validators=[DataRequired()])
+    content = TextAreaField('Markdown Content', validators=[DataRequired()])
     submit = SubmitField('Create Page')
     
 class CommentForm(FlaskForm):

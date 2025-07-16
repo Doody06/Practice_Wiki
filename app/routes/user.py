@@ -25,16 +25,20 @@ def all_pages():
 
 @bp.route('/page/<slug>')
 def view_page(slug):
-    from app.models import Page, Comment
+    from app.models import Page, Comment, PageVersion
+    import markdown2
+    from markupsafe import Markup
     page = Page.query.filter_by(slug=slug).first_or_404()
+    html_content = Markup(markdown2.markdown(page.content))
     from app.forms import CommentForm
     form = CommentForm()
     comments = Comment.query.filter_by(page_id=page.id).all()
+    page_versions = PageVersion.query.filter_by(page_id=page.id).order_by(PageVersion.created_at.desc()).all()
     if current_user.is_authenticated:
         is_admin = current_user.is_admin
     else:
         is_admin = False
-    return render_template('page.html', page=page, form=form, comments=comments, is_admin=is_admin)
+    return render_template('page.html', page=page, form=form, comments=comments, page_versions=page_versions, is_admin=is_admin, content=html_content)
 
 @login_required
 @bp.route('/suggest_page_edit/<slug>', methods=['GET', 'POST'])

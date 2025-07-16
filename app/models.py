@@ -56,5 +56,18 @@ class Comment(db.Model):
     author = db.relationship('User', backref=db.backref('comments', lazy=True))
     
     def __repr__(self):
-        return f'<Comment by {self.author.username} on Page {self.page_od}>'
+        return f'<Comment by {self.author.username} on Page {self.page_id}>'
+    
+class PageVersion(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    page_id = db.Column(db.Integer, db.ForeignKey('page.id'), nullable=False)
+    page = db.relationship('Page', backref=db.backref('versions', lazy=True))
+    title = db.Column(db.String(200), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    author = db.relationship('User', backref=db.backref('page_versions', lazy=True))
+    
+    def __repr__(self):
+        return f'<PageVersion {self.title} for Page {self.page_id}>'
     

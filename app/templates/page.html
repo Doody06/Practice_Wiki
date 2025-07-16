@@ -3,9 +3,13 @@
 {% block title %}{{ page_title }}{% endblock %}
 
 {% block content %}
-    <h1>{{ page.title }}</h1>
+    <!-- <h1>{{ page.title }}</h1>
     <div class="content">
         {{ page.content | safe }}
+    </div> -->
+    <h1>{{ page.title }}</h1>
+    <div class="markdown-content">
+        {{ content | safe }}
     </div>
     <div class="metadata">
         <p>Last edited by: {{ page.last_edited_by }}</p>
@@ -42,4 +46,18 @@
             <button type="submit" class="btn btn-primary mt-2">Submit</button>
     </div>
 
+    <div class="container mt-5">
+        <h2>Page History</h2>
+        {% if page_versions %}
+            <ul>
+                {% for version in page_versions %}
+                    <li>
+                        <strong>{{ version.title }}</strong> - {{ version.author }} on {{ version.created_at }}
+                        <p>{{ version.content }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No history available for this page.</p>
+        {% endif %}
 {% endblock %}
