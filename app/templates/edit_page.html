@@ -13,15 +13,32 @@
         </div>
         <div class="mb-3">
             <label for="content" class="form-label">Content</label>
-            {{ form.content(class="form-control", rows=5, placeholder="Enter page content") }}
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    document.getElementsByName("content")[0].value = `{{ page.content | e }}`;
-                });
-            </script>
+            {{ form.content(class="form-control", id="markdown-input", rows=5, placeholder="Enter page content") }}
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Live Preview</label>
+            <div id="markdown-preview" style="border:1px solid #ccc; padding:10px; min-height:100px; background:#fafafa;"></div>
+        </div>
         </div>
         <button type="submit" class="btn btn-primary">Save Changes</button>
     </form>
 </div>
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var textarea = document.getElementById('markdown-input');
+    var preview = document.getElementById('markdown-preview');
+    textarea.value = `{{ page.content | e }}`;
+    preview.innerHTML = marked.parse(textarea.value);
+    textarea.addEventListener('input', function() {
+        var raw = this.value;
+        var html = marked.parse(raw);
+        preview.innerHTML = html;
+    });
+});
+</script>
+{% endblock %}
 
 {% endblock %}

@@ -3,11 +3,13 @@
 
 {% block content %} 
 {%for suggestion in suggestions%}
-<div class="suggestion">
-    <p>{{ suggestion.text }}</p>
-    <a href="{{ url_for('admin.view_suggestion', suggestion_id=suggestion.id, slug=suggestion.page.slug) }}">
-        <button type="button">View Suggestion</button>
-    </a>
+<div class="card mb-3 border">
+    <div class="card-body">
+        <p class="card-title">{{ suggestion.title }}</p>
+        <a href="{{ url_for('admin.view_suggestion', suggestion_id=suggestion.id, slug=suggestion.page.slug) }}">
+            <button type="button" class="btn btn-primary">View Suggestion</button>
+        </a>
+    </div>
 </div>
 
 {% endfor %}

@@ -1,9 +1,24 @@
 
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import current_user, login_required
+import bleach
 
 bp = Blueprint('user', __name__)
 
+ALLOWED_TAGS = set(bleach.sanitizer.ALLOWED_TAGS).union({'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'blockquote', 'ul', 'ol', 'li', 'strong', 'em', 'a','img'})
+ALLOWED_ATTRIBUTES = bleach.sanitizer.ALLOWED_ATTRIBUTES = {
+    '*': ['class', 'id', 'style', 'href', 'title'],
+    'a': ['href', 'title', 'target'],
+    'img': ['src', 'alt', 'title'],
+}
+
+ALLOWED_PROTOCOLS = ['http', 'https', 'mailto']
+def render_safe_markdown(content):
+    import markdown2
+    from markupsafe import Markup
+    html = markdown2.markdown(content)
+    clean_html = bleach.clean(html, tags=ALLOWED_TAGS, attributes=ALLOWED_ATTRIBUTES, protocols=ALLOWED_PROTOCOLS)
+    return Markup(clean_html)
 @bp.route('/')
 def redirect_home():
     return redirect(url_for('user.home'))
@@ -29,7 +44,7 @@ def view_page(slug):
     import markdown2
     from markupsafe import Markup
     page = Page.query.filter_by(slug=slug).first_or_404()
-    html_content = Markup(markdown2.markdown(page.content))
+    html_content = render_safe_markdown(page.content)
     from app.forms import CommentForm
     form = CommentForm()
     comments = Comment.query.filter_by(page_id=page.id).all()

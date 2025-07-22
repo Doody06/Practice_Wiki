@@ -14,9 +14,24 @@
         </div>
         <div class="mb-3">
             <label for="content" class="form-label">Content</label>
-            {{ form.content(class="form-control", rows=5, placeholder="Enter page content") }}
+            {{ form.content(class="form-control", id="markdown-input", rows=5, placeholder="Enter page content") }}
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Live Preview</label>
+            <div id="markdown-preview" style="border:1px solid #ccc; padding:10px; min-height:100px; background:#fafafa;"></div>
         </div>
         <button type="submit" class="btn btn-primary">Create Page</button>
 </div>
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+document.getElementById('markdown-input').addEventListener('input', function() {
+    var raw = this.value;
+    var html = marked.parse(raw);
+    document.getElementById('markdown-preview').innerHTML = html;
+});
+</script>
+{% endblock %}
 
 {% endblock %}
