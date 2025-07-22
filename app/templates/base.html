@@ -57,6 +57,7 @@
                 <a href="{{ url_for('admin.dashboard') }}">Admin Dashboard</a>
             {% endif %}
             <a href="{{ url_for('auth.logout') }}" class="right">Logout ({{ current_user.username }})</a>
+            <a href="{{ url_for('user.profile', username=current_user.username) }}" class="right">Profile</a>
         {% else %}
             <a href="{{ url_for('auth.login') }}" class="right">Login</a>
             <a href="{{ url_for('auth.register') }}" class="right">Register</a>

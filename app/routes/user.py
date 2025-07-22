@@ -1,6 +1,7 @@
 
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import current_user, login_required
+from app.models import User
 import bleach
 
 bp = Blueprint('user', __name__)
@@ -97,3 +98,18 @@ def comment_on_page(slug):
         else:
             flash('Error adding comment. Please try again.', 'error')
     return redirect(url_for('user.view_page', slug=slug, form=form))
+
+@bp.route('/profile/<username>')
+@login_required
+def profile(username):
+    from app.models import Suggestion, Comment
+    user_id = User.query.filter_by(username=username).first_or_404().id
+    user_suggestions = Suggestion.query.filter_by(suggested_by_id=user_id).all()
+    user_comments = Comment.query.filter_by(author_id=user_id).all() 
+    # if current_user.is_authenticated:
+    #     do some stuff related to previous edits
+    return render_template('profile.html', user=current_user, suggestions=user_suggestions, comments=user_comments)
+
+
+        
+    

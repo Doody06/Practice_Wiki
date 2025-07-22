@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Edit Profile</h1>
+    <form method="POST" action="{{ url_for('auth.edit_profile') }}">
+        {{ form.csrf_token}}
+        <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control" id="username" name="username" required, value="{{ user.username }}">
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" required, value="{{ user.email }}">
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Leave blank to keep current password">
+        </div>
+        <div class="mb-3">
+            <label for="confirm_password" class="form-label">Confirm Password</label>
+            <input type="password" class="form-control" id="confirm_password" name="confirm_password">
+        <button type="submit" class="btn btn-primary">Change profile information</button>
+        </form>
+</div>
+<div>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for messages in messages %}
+    <div class="alert alert-info mt-3">
+        {{ messages }}
+        {% endfor %}
+        </div>
+    {% endif %}
+    {% endwith %}
+</div>
+{% endblock %}
