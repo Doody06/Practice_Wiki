@@ -41,6 +41,7 @@ def edit_page(slug):
             db.session.add(PageVersion(title=page.title, content=page.content, page_id=page.id, author=current_user))
             page.title = request.form.get('title')
             page.content = request.form.get('content')
+            page.author = current_user
             page.slug = Page.slugify(page.title)
             db.session.commit()
             return redirect(url_for('admin.dashboard'))

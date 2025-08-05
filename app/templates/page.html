@@ -3,34 +3,31 @@
 {% block title %}{{ page_title }}{% endblock %}
 
 {% block content %}
-    <!-- <h1>{{ page.title }}</h1>
-    <div class="content">
-        {{ page.content | safe }}
-    </div> -->
     <h1>{{ page.title }}</h1>
     <div class="markdown-content">
         {{ content | safe }}
     </div>
-    </div>
-    <div class="metadata">
-        <p>Last edited by: {{ page.last_edited_by }}</p>
-        <p>Last edited on: {{ page.last_edited_at }}</p>
+    <hr>
+    <div class="metadata small-text">
+        <p>Last edited by: {{ page.author }}</p>
+        <p>Last edited on: {{ page.updated_at }}</p>
     </div>
     <div class="suggest-edit">
         <form action="{{ url_for('user.suggest_page_edit', slug=page.slug) }}" method="get">
             <button type="submit">Suggest an Edit</button>
         </form>
     </div>
-    <div>
+    <div class="small-text">
         <h2>Comments</h2>
         {% if comments %}
             <ul>
                 {% for comment in comments %}
                     <li>{{ comment.content }} - <em>by {{ comment.author }} on {{ comment.created_at }}</em></li>
                     {% if is_admin %}
-                        <form action="{{ url_for('admin.delete_comment', comment_id=comment.id) }}" method="post">
-                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                        </form>
+                    <form id="delete-form-{{ comment.id }}" action="{{ url_for('admin.delete_comment', comment_id=comment.id) }}" method="post" style="display:inline;">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
                     {% endif %}
                 {% endfor %}
             </ul>
