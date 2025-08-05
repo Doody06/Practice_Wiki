@@ -3,10 +3,11 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import current_user, login_required
 from app.models import User
 import bleach
+import markdown2
 
 bp = Blueprint('user', __name__)
 
-ALLOWED_TAGS = set(bleach.sanitizer.ALLOWED_TAGS).union({'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'blockquote', 'ul', 'ol', 'li', 'strong', 'em', 'a','img'})
+ALLOWED_TAGS = set(bleach.sanitizer.ALLOWED_TAGS).union({'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'blockquote', 'ul', 'ol', 'li', 'strong', 'em', 'a','img','br'})
 ALLOWED_ATTRIBUTES = bleach.sanitizer.ALLOWED_ATTRIBUTES = {
     '*': ['class', 'id', 'style', 'href', 'title'],
     'a': ['href', 'title', 'target'],
@@ -15,7 +16,6 @@ ALLOWED_ATTRIBUTES = bleach.sanitizer.ALLOWED_ATTRIBUTES = {
 
 ALLOWED_PROTOCOLS = ['http', 'https', 'mailto']
 def render_safe_markdown(content):
-    import markdown2
     from markupsafe import Markup
     html = markdown2.markdown(content)
     clean_html = bleach.clean(html, tags=ALLOWED_TAGS, attributes=ALLOWED_ATTRIBUTES, protocols=ALLOWED_PROTOCOLS)

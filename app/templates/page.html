@@ -11,9 +11,11 @@
     <div class="markdown-content">
         {{ content | safe }}
     </div>
+    </div>
     <div class="metadata">
         <p>Last edited by: {{ page.last_edited_by }}</p>
         <p>Last edited on: {{ page.last_edited_at }}</p>
+    </div>
     <div class="suggest-edit">
         <form action="{{ url_for('user.suggest_page_edit', slug=page.slug) }}" method="get">
             <button type="submit">Suggest an Edit</button>
@@ -26,7 +28,7 @@
                 {% for comment in comments %}
                     <li>{{ comment.content }} - <em>by {{ comment.author }} on {{ comment.created_at }}</em></li>
                     {% if is_admin %}
-                        <form action="{{ url_for('admin.delete_comment', comment_id=comment.id) }}" methods="post">
+                        <form action="{{ url_for('admin.delete_comment', comment_id=comment.id) }}" method="post">
                             <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                         </form>
                     {% endif %}
@@ -43,7 +45,9 @@
             <div class="mb-3">
                 <label for="content" class="form-label">Comment</label>
                 {{ form.content(class="form-control", rows=3, placeholder="Enter your comment here") }}
+            </div>
             <button type="submit" class="btn btn-primary mt-2">Submit</button>
+        </form>
     </div>
 
     <div class="container mt-5">
@@ -60,4 +64,5 @@
         {% else %}
             <p>No history available for this page.</p>
         {% endif %}
+    </div>
 {% endblock %}
