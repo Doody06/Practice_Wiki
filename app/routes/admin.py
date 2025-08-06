@@ -4,6 +4,7 @@ from app.decorators import admin_required
 from app import db
 from app.forms import NewPageForm
 from app.models import Page
+from .user import render_safe_markdown
 
 bp = Blueprint('admin', __name__)
 
@@ -97,6 +98,7 @@ def view_page_suggestions():
 def view_suggestion(suggestion_id, slug):
     from app.models import Suggestion
     suggestion = Suggestion.query.filter_by().first_or_404()
+    suggestion.content = render_safe_markdown(suggestion.content)
     return render_template('view_suggestion.html', suggestion=suggestion)
 
 @admin_required

@@ -1,4 +1,3 @@
-
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import current_user, login_required
 from app.models import User
@@ -7,11 +6,17 @@ import markdown2
 
 bp = Blueprint('user', __name__)
 
-ALLOWED_TAGS = set(bleach.sanitizer.ALLOWED_TAGS).union({'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'blockquote', 'ul', 'ol', 'li', 'strong', 'em', 'a','img','br'})
-ALLOWED_ATTRIBUTES = bleach.sanitizer.ALLOWED_ATTRIBUTES = {
+ALLOWED_TAGS = set(bleach.sanitizer.ALLOWED_TAGS).union({
+    'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'blockquote', 'ul', 'ol', 'li',
+    'strong', 'em', 'a', 'img', 'br', 'code', 'pre', 'hr',
+    'table', 'thead', 'tbody', 'tr', 'th', 'td'
+})
+ALLOWED_ATTRIBUTES = {
     '*': ['class', 'id', 'style', 'href', 'title'],
     'a': ['href', 'title', 'target'],
     'img': ['src', 'alt', 'title'],
+    'td': ['colspan', 'rowspan'],
+    'th': ['colspan', 'rowspan'],
 }
 
 ALLOWED_PROTOCOLS = ['http', 'https', 'mailto']
@@ -49,7 +54,11 @@ def view_page(slug):
     from app.forms import CommentForm
     form = CommentForm()
     comments = Comment.query.filter_by(page_id=page.id).all()
+    for comment in comments:
+        comment.content = render_safe_markdown(comment.content)
     page_versions = PageVersion.query.filter_by(page_id=page.id).order_by(PageVersion.created_at.desc()).all()
+    for version in page_versions:
+        version.content = render_safe_markdown(version.content)
     if current_user.is_authenticated:
         is_admin = current_user.is_admin
     else:
@@ -111,5 +120,4 @@ def profile(username):
     return render_template('profile.html', user=current_user, suggestions=user_suggestions, comments=user_comments)
 
 
-        
-    
+
