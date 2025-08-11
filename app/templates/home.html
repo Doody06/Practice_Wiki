@@ -6,5 +6,14 @@
 this is the home Page
 {% if user.is_authenticated %}
     <h1>Welcome, {{ user.username }}!</h1>
+    <p class="small-text">You are logged in as a {{ user.role }}.</p>
 {% endif %}
+    <br> <br> <br>
+    <p>search</p>
+    <div class="search-bar" style="width: 25%; min-width: 250px; margin-left: 0;">
+        <form action="{{ url_for('user.search') }}" method="get" style="display: flex; align-items: center; gap: 8px;">
+            <input type="text" name="query" placeholder="Search pages..." required style="flex: 1; padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
+            <button type="submit" style="padding: 8px 16px; border-radius: 4px; background-color: #007bff; color: white; border: none;">🔍</button>
+        </form>
+    </div>
 {% endblock %}

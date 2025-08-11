@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import current_user, login_required
-from app.models import User
+from app.models import User, Page
 import bleach
 import markdown2
 
@@ -33,6 +33,14 @@ def redirect_home():
 def home():
     user = current_user
     return render_template('home.html', user=user)
+
+@bp.route('/search', methods=['GET'])
+def search():
+    if request.method == 'GET':
+        query = request.args.get('query', '')
+        pages = Page.query.filter(Page.title.ilike(f'%{query}%')).all() if query else None
+        return render_template('search.html', query=query, pages=pages)
+    return render_template('search.html')
 
 @bp.route('/all_pages')
 def all_pages():
