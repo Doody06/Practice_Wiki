@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import current_user, login_required
 from app.models import User, Page
+from app import cache
 import bleach
 import markdown2
 
@@ -30,6 +31,7 @@ def redirect_home():
     return redirect(url_for('user.home'))
 
 @bp.route('/home')
+@cache.cached(timeout=10, query_string=True)
 def home():
     user = current_user
     return render_template('home.html', user=user)
@@ -43,6 +45,7 @@ def search():
     return render_template('search.html')
 
 @bp.route('/all_pages')
+@cache.cached(timeout=10, query_string=True)
 def all_pages():
     from app.models import Page
     pages = Page.query.all()
