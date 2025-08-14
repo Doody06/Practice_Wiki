@@ -122,13 +122,14 @@ def comment_on_page(slug):
 @bp.route('/profile/<username>')
 @login_required
 def profile(username):
-    from app.models import Suggestion, Comment
+    from app.models import Suggestion, Comment, PageVersion
     user_id = User.query.filter_by(username=username).first_or_404().id
+    user = User.query.get(user_id)
     user_suggestions = Suggestion.query.filter_by(suggested_by_id=user_id).all()
     user_comments = Comment.query.filter_by(author_id=user_id).all() 
-    # if current_user.is_authenticated:
-    #     do some stuff related to previous edits
-    return render_template('profile.html', user=current_user, suggestions=user_suggestions, comments=user_comments)
+    if user.is_admin:
+        edited_pages = PageVersion.query.filter_by(author_id=user_id).all()      
+    return render_template('profile.html', user=current_user, suggestions=user_suggestions, comments=user_comments, edited_pages=edited_pages)
 
 
 
