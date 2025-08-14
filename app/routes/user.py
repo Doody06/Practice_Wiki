@@ -37,6 +37,7 @@ def home():
     return render_template('home.html', user=user)
 
 @bp.route('/search', methods=['GET'])
+@cache.cached(timeout=10, query_string=True)
 def search():
     if request.method == 'GET':
         query = request.args.get('query', '')
@@ -56,6 +57,7 @@ def all_pages():
     return render_template('all_pages.html', pages=pages, is_admin=is_admin)
 
 @bp.route('/page/<slug>')
+@cache.cached(timeout=10, query_string=True)
 def view_page(slug):
     from app.models import Page, Comment, PageVersion
     import markdown2
