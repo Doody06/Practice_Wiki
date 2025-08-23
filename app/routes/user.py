@@ -78,6 +78,16 @@ def view_page(slug):
         is_admin = False
     return render_template('page.html', page=page, form=form, comments=comments, page_versions=page_versions, is_admin=is_admin, content=html_content)
 
+@bp.route('/page_version/<int:id>')
+@cache.cached(timeout=10, query_string=True)
+def view_page_version(id):
+    from app.models import PageVersion
+    import markdown2
+    from markupsafe import Markup
+    version = PageVersion.query.get_or_404(id)
+    html_content = render_safe_markdown(version.content)
+    return render_template('page_version.html', page=version, content=html_content)
+                        
 @login_required
 @bp.route('/suggest_page_edit/<slug>', methods=['GET', 'POST'])
 def suggest_page_edit(slug):

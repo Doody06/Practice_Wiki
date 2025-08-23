@@ -54,7 +54,7 @@
                 {% for version in page_versions %}
                     <li>
                         <strong>{{ version.title }}</strong> - {{ version.author }} on {{ version.created_at }}
-                        <p>{{ version.content }}</p>
+                        <a href="{{ url_for('user.view_page_version', id=version.id) }}">View</a>
                     </li>
                 {% endfor %}
             </ul>
