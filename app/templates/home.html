@@ -3,17 +3,41 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-this is the home Page
-{% if user.is_authenticated %}
-    <h1>Welcome, {{ user.username }}!</h1>
-    <p class="small-text">You are logged in as a {{ user.role }}.</p>
-{% endif %}
-    <br> <br> <br>
-    <p>search</p>
-    <div class="search-bar" style="width: 25%; min-width: 250px; margin-left: 0;">
-        <form action="{{ url_for('user.search') }}" method="get" style="display: flex; align-items: center; gap: 8px;">
-            <input type="text" name="query" placeholder="Search pages..." required style="flex: 1; padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
-            <button type="submit" style="padding: 8px 16px; border-radius: 4px; background-color: #007bff; color: white; border: none;">🔍</button>
-        </form>
+<div class="container">
+    <div class="hero-section card">
+        <h1>Welcome to Practice Wiki</h1>
+        {% if current_user.is_authenticated %}
+            <p>Hello, {{ current_user.username }}! You are logged in as a {{ current_user.role }}.</p>
+        {% else %}
+            <p>A collaborative knowledge base where everyone can contribute.</p>
+            <div class="cta-buttons">
+                <a href="{{ url_for('auth.login') }}" class="btn btn-primary">Log In</a>
+                <a href="{{ url_for('auth.register') }}" class="btn btn-outline">Sign Up</a>
+            </div>
+        {% endif %}
     </div>
+
+    <div class="search-section">
+        <h2>Find Knowledge</h2>
+        <div class="search-bar">
+            <form action="{{ url_for('user.search') }}" method="get">
+                <div class="search-input-group">
+                    <input type="text" name="query" placeholder="Search pages..." required>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {% if current_user.is_authenticated %}
+    <div class="quick-actions card">
+        <h3>Quick Actions</h3>
+        <div class="action-buttons">
+            <a href="{{ url_for('user.new_page') }}" class="btn btn-primary">Create New Page</a>
+            <a href="{{ url_for('user.all_pages') }}" class="btn btn-outline">Browse All Pages</a>
+            <a href="{{ url_for('user.profile', username=current_user.username) }}" class="btn btn-outline">View Profile</a>
+        </div>
+    </div>
+    {% endif %}
+</div>
 {% endblock %}
