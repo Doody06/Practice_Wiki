@@ -70,11 +70,17 @@
     </div>
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
-        <div style="background-color:#ffdddd; color:#a94442; border-bottom:1px solid #e0b4b4; padding:10px; text-align:center;">
-          {% for category, message in messages %}
-            <span>{{ message }}</span>
-          {% endfor %}
-        </div>
+        {% for category, message in messages %}
+          {% if category == 'error' %}
+            <div style="background-color:#ffdddd; color:#a94442; border-bottom:1px solid #e0b4b4; padding:10px; text-align:center;">
+              <span>{{ message }}</span>
+            </div>
+          {% else %}
+            <div style="background-color:#ddffdd; color:#256029; border-bottom:1px solid #b4e0b4; padding:10px; text-align:center;">
+              <span>{{ message }}</span>
+            </div>
+          {% endif %}
+        {% endfor %}
       {% endif %}
     {% endwith %}
     {% block content %}{% endblock %}

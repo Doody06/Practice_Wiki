@@ -22,7 +22,7 @@ def create_app():
     migrate.init_app(app, db)
     cache.init_app(app)
 
-    app.config['CACHE_TYPE'] = 'SimpleCache'
+    app.config['CACHE_TYPE'] = 'Simple'
 
     from app import models  # Import models to register them with SQLAlchemy
     
