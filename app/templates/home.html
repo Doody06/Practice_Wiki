@@ -3,7 +3,7 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container" style="color: #212529;">
     <div class="hero-section card">
         <h1>Welcome to Practice Wiki</h1>
         {% if current_user.is_authenticated %}
@@ -18,7 +18,7 @@
     </div>
 
     <div class="search-section">
-        <h2>Find Knowledge</h2>
+        <h2>Search for a page</h2>
         <div class="search-bar">
             <form action="{{ url_for('user.search') }}" method="get">
                 <div class="search-input-group">
@@ -29,15 +29,18 @@
         </div>
     </div>
 
-    {% if current_user.is_authenticated %}
+    <!-- {% if current_user.is_authenticated %} quick actions removed. Top bar is sufficient.
     <div class="quick-actions card">
         <h3>Quick Actions</h3>
         <div class="action-buttons">
-            <a href="{{ url_for('user.new_page') }}" class="btn btn-primary">Create New Page</a>
+            {% if current_user.is_admin %}
+                <a href="{{ url_for('admin.dashboard') }}" class="btn btn-danger">Admin Dashboard</a>
+                <a href="{{ url_for('admin.new_page') }}" class="btn btn-primary">Create New Page</a>
+            {% endif %}
             <a href="{{ url_for('user.all_pages') }}" class="btn btn-outline">Browse All Pages</a>
             <a href="{{ url_for('user.profile', username=current_user.username) }}" class="btn btn-outline">View Profile</a>
         </div>
     </div>
-    {% endif %}
+    {% endif %} -->
 </div>
 {% endblock %}

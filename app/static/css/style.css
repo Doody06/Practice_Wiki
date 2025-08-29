@@ -1,11 +1,16 @@
 /* Main styles */
 /* Additional styles for homepage */
-.hero-section {
+.hero-section.card {
     text-align: center;
     padding: 3rem 2rem;
     background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
-    color: white;
+    color: white !important;
     margin-bottom: 2rem;
+}
+
+.hero-section.card h1,
+.hero-section.card p {
+    color: white !important;
 }
 
 .hero-section h1 {
@@ -234,6 +239,68 @@ body {
 .flash-message.success {
     background-color: #51cf66;
     color: white;
+}
+
+/* Pages List Styling */
+.pages-list {
+    padding: 0;
+}
+
+.page-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.2s;
+}
+
+.page-item:last-child {
+    border-bottom: none;
+}
+
+.page-item:hover {
+    background-color: #f8f9fa;
+}
+
+.page-title-link a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+.page-title-link a:hover {
+    color: var(--secondary-color);
+}
+
+.page-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+.text-subtle {
+    color: #666;
+}
+
+.no-pages {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+    font-style: italic;
+}
+
+.page-title {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border-color);
+    color: var(--primary-color);
 }
 
 /* Footer */
