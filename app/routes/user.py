@@ -45,11 +45,11 @@ def search():
         return render_template('search.html', query=query, pages=pages)
     return render_template('search.html')
 
-@bp.route('/all_pages')
+@bp.route('/all_pages', methods=['GET'])
 @cache.cached(timeout=10, query_string=True)
 def all_pages():
     from app.models import Page
-    pages = Page.query.all()
+    pages = Page.query.paginate(page=request.args.get('page', 1, type=int), per_page=5)
     if current_user.is_authenticated:
         is_admin = current_user.is_admin
     else:

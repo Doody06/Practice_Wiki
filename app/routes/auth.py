@@ -9,9 +9,9 @@ bp = Blueprint('auth', __name__)
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     #temporary login my account for debugging
-#    user = User.query.filter_by(username='doody').first()
-#    login_user(user)
-#    return redirect(url_for('admin.dashboard'))
+    #user = User.query.filter_by(username='doody').first()
+    #login_user(user)
+    #return redirect(url_for('admin.dashboard'))
     # normal login logic
     form = LoginForm()
     if form.validate_on_submit():

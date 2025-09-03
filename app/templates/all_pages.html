@@ -29,6 +29,20 @@
         </div>
     </div>
 </div>
+
+
+<div class="container mt-5">
+    <div class="pagination">
+        {% if pages.has_prev %}
+            <a href="?page={{ pages.prev_num }}" class="btn btn-primary btn-sm">Previous</a>
+        {% endif %}
+        <span class="mx-2">Page {{ pages.page }} of {{ pages.pages }}</span>
+        {% if pages.has_next %}
+            <a href="?page={{ pages.next_num }}" class="btn btn-primary btn-sm">Next</a>
+        {% endif %}
+    </div>
+</div>
+
 {% endblock %}
 
 {% block scripts %}

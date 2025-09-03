@@ -11,6 +11,9 @@
         </a>
     </div>
 </div>
+{% if not suggestions %}
+    <p>No suggestions available right now.</p>
+{% endif %}
 
 {% endfor %}
 {% endblock %}

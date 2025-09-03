@@ -5,7 +5,7 @@
 {% block content %}
 <div class="container" style="color: #212529;">
     <div class="hero-section card">
-        <h1>Welcome to Practice Wiki</h1>
+        <h1>Welcome to Beece's minecraft wiki</h1>
         {% if current_user.is_authenticated %}
             {% if current_user.is_admin %}
                 <p>Hello, {{ current_user.username }}! You are logged in as an admin.</p>
@@ -13,7 +13,7 @@
                 <p>Hello, {{ current_user.username }}! You are logged in as a contributor.</p>
             {% endif %}
         {% else %}
-            <p>A collaborative knowledge base where everyone can contribute.</p>
+            <p>Anyone can contribute. Your welcome to suggest any changes!</p>
             <div class="cta-buttons">
                 <a href="{{ url_for('auth.login') }}" class="btn btn-primary">Log In</a>
                 <a href="{{ url_for('auth.register') }}" class="btn btn-outline">Sign Up</a>
