@@ -140,8 +140,9 @@ def profile(username):
     user_suggestions = Suggestion.query.filter_by(suggested_by_id=user_id).all()
     user_comments = Comment.query.filter_by(author_id=user_id).all() 
     if user.is_admin:
-        edited_pages = PageVersion.query.filter_by(author_id=user_id).all()      
-    return render_template('profile.html', user=current_user, suggestions=user_suggestions, comments=user_comments, edited_pages=edited_pages)
+        edited_pages = PageVersion.query.filter_by(author_id=user_id).all()  
+        return render_template('profile.html', user=current_user, suggestions=user_suggestions or None, comments=user_comments or None, edited_pages=edited_pages or None)
+    return render_template('profile.html', user=current_user, suggestions=user_suggestions or None, comments=user_comments or None)
 
 
 

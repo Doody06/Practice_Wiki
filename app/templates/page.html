@@ -21,7 +21,7 @@
         <div class="metadata card">
             <div class="metadata-item">
                 <span class="metadata-label">Last edited by:</span>
-                <span class="metadata-value">{{ page.author }}</span>
+                <span class="metadata-value">{{ page.author.username }}</span>
             </div>
             <div class="metadata-item">
                 <span class="metadata-label">Last edited on:</span>
@@ -34,7 +34,7 @@
             {% if comments %}
             <ul>
                 {% for comment in comments %}
-                    <li>{{ comment.content }} - <em>by {{ comment.author }} on {{ comment.created_at }}</em></li>
+                    <li>{{ comment.content }} - <em>by {{ comment.author.username }} on {{ comment.created_at }}</em></li>
                     {% if is_admin %}
                     <form id="delete-form-{{ comment.id }}" action="{{ url_for('admin.delete_comment', comment_id=comment.id) }}" method="post" style="display:inline;">
                         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
@@ -64,7 +64,7 @@
             <ul>
                 {% for version in page_versions %}
                     <li>
-                        <strong>{{ version.title }}</strong> - {{ version.author }} on {{ version.created_at }}
+                        <strong>{{ version.title }}</strong> - {{ version.author.username }} on {{ version.created_at }}
                         <a href="{{ url_for('user.view_page_version', id=version.id) }}">View</a>
                     </li>
                 {% endfor %}

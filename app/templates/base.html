@@ -28,7 +28,7 @@
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         {% for category, message in messages %}
-          {% if category == 'error' %}
+          {% if category == 'danger' %}
             <div style="background-color:#ffdddd; color:#a94442; border-bottom:1px solid #e0b4b4; padding:10px; text-align:center;">
               <span>{{ message }}</span>
             </div>
