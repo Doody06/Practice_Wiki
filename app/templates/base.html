@@ -3,17 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Practice Wiki - {% block title %}Welcome{% endblock %}</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <title>Minecraft Mod Wiki - {% block title %}Welcome{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=VT323&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/wiki.css') }}">
+    <style>
+        @font-face {
+            font-family: 'MinecraftiaRegular';
+            src: url('https://cdn.jsdelivr.net/gh/zeroxone/Minecraftia@master/Minecraftia-Regular.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+        
+        h1, h2, h3 {
+            font-family: 'VT323', monospace;
+            letter-spacing: 0.5px;
+        }
+    </style>
     {% block head %}{% endblock %}
 <body>
     <div class="topnav">
         <a class="active" href="{{ url_for('user.home') }}">Home</a>
         <a href="{{ url_for('user.all_pages')}}">All Pages</a>
-        <a href="#">Contact</a>
-        <a href="#">About</a>
+        <a href="{{ url_for('user.random_page')}}">Random Page</a>
         {% if current_user.is_authenticated %}
             {% if current_user.is_admin %}
                 <a href="{{ url_for('admin.dashboard') }}">Admin Dashboard</a>

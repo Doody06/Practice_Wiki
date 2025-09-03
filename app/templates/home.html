@@ -7,7 +7,11 @@
     <div class="hero-section card">
         <h1>Welcome to Practice Wiki</h1>
         {% if current_user.is_authenticated %}
-            <p>Hello, {{ current_user.username }}! You are logged in as a {{ current_user.role }}.</p>
+            {% if current_user.is_admin %}
+                <p>Hello, {{ current_user.username }}! You are logged in as an admin.</p>
+                {% else %}
+                <p>Hello, {{ current_user.username }}! You are logged in as a contributor.</p>
+            {% endif %}
         {% else %}
             <p>A collaborative knowledge base where everyone can contribute.</p>
             <div class="cta-buttons">

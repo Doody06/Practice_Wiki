@@ -144,5 +144,16 @@ def profile(username):
         return render_template('profile.html', user=current_user, suggestions=user_suggestions or None, comments=user_comments or None, edited_pages=edited_pages or None)
     return render_template('profile.html', user=current_user, suggestions=user_suggestions or None, comments=user_comments or None)
 
-
-
+@bp.route('/random_page')
+def random_page():
+    from app.models import Page
+    import random
+    page_count = Page.query.count()
+    if page_count == 0:
+        flash('No pages available.', 'error')
+        return redirect(url_for('user.home'))
+    for i in range(page_count):
+        random_offset = random.randint(0, page_count - 1)
+        random_page = Page.query.offset(random_offset).first()
+        if random_page:
+            return redirect(url_for('user.view_page', slug=random_page.slug))

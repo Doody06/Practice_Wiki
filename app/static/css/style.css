@@ -92,11 +92,14 @@
     }
 }
 :root {
-    --primary-color: #2c3e50;
-    --secondary-color: #3498db;
-    --bg-color: #f5f6fa;
-    --text-color: #2c3e50;
-    --border-color: #dcdde1;
+    --primary-color: #2B5B3E;  /* Forest green - representing Minecraft's nature */
+    --secondary-color: #7CB342; /* Lighter green for accents */
+    --bg-color: #F5F7F4;  /* Light mint for background */
+    --text-color: #333333;
+    --border-color: #CFE1C6;
+    --header-bg: #2B5B3E;
+    --card-bg: #FFFFFF;
+    --hover-color: #E8F5E9;
 }
 
 body {
@@ -141,11 +144,18 @@ body {
 
 /* Cards */
 .card {
-    background: white;
+    background: var(--card-bg);
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     padding: 1.5rem;
     margin-bottom: 1.5rem;
+    border: 2px solid var(--border-color);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
 }
 
 /* Forms */
@@ -161,11 +171,21 @@ body {
 .btn {
     display: inline-block;
     padding: 0.75rem 1.5rem;
-    border: none;
+    border: 2px solid transparent;
     border-radius: 4px;
     font-size: 1rem;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: all 0.3s;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-family: 'VT323', monospace;
+    font-size: 1.1rem;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .btn-primary {
