@@ -99,7 +99,7 @@ def suggest_page_edit(slug):
     
     if not current_user.is_authenticated:
         flash('You must be logged in to suggest edits.', 'error')
-        return redirect(url_for('user.view_page', slug=slug))
+        return redirect(url_for('auth.login'))
     
     if request.method == 'POST':
         if form.validate_on_submit():

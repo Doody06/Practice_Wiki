@@ -25,15 +25,5 @@
         <button type="submit" class="btn btn-primary">Change profile information</button>
         </form>
 </div>
-<div>
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    {% for messages in messages %}
-    <div class="alert alert-info mt-3">
-        {{ messages }}
-        {% endfor %}
-        </div>
-    {% endif %}
-    {% endwith %}
-</div>
+
 {% endblock %}
