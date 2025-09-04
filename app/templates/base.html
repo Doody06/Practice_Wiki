@@ -52,7 +52,21 @@
         {% endfor %}
       {% endif %}
     {% endwith %}
-    {% block content %}{% endblock %}
+
+{% block content %}{% endblock %}
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <span>© 2025 Minecraft Mod Wiki</span>
+            </div>
+            <div class="footer-links">
+                <a href="{{ url_for('user.contact') }}" class="footer-btn">Contact Me</a>
+                <a href="{{ url_for('user.about') }}" class="footer-btn">About Me</a>
+            </div>
+        </div>
+    </footer>
+
 
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

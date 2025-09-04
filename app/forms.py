@@ -5,7 +5,7 @@ import markdown2
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=3, max=25)])
-    password = StringField('Password', validators=[DataRequired(), Length(min=6, max=50)])
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=6, max=50)])
     submit = SubmitField('Login')
 
 class RegistrationForm(FlaskForm):

@@ -157,3 +157,11 @@ def random_page():
         random_page = Page.query.offset(random_offset).first()
         if random_page:
             return redirect(url_for('user.view_page', slug=random_page.slug))
+        
+@bp.route('/about')
+def about():
+    return render_template('about.html')
+
+@bp.route('/contact')
+def contact():
+    return render_template('contact.html')
