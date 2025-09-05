@@ -50,7 +50,9 @@ def register():
 @bp.route('/logout') 
 @login_required  
 def logout():
+    from app import cache
     logout_user()
+    cache.clear()
     return redirect(url_for('user.home'))  
 
 @bp.route('/edit_profile', methods=['GET', 'POST'])
