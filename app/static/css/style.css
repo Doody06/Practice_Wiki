@@ -321,6 +321,12 @@ body {
     font-style: italic;
 }
 
+.wiki-page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding-bottom: 4rem;
+}
+
 .page-title {
     margin-bottom: 1.5rem;
     padding-bottom: 1rem;
@@ -328,11 +334,94 @@ body {
     color: var(--primary-color);
 }
 
+/* Comments styling */
+.comments-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.comment-item {
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem 0;
+}
+
+.comment-item:last-child {
+    border-bottom: none;
+}
+
+.comment-content {
+    margin-bottom: 0.5rem;
+}
+
+.comment-meta {
+    font-size: 0.9rem;
+    color: #666;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Version history styling */
+.version-list {
+    list-style: none;
+    padding: 0;
+}
+
+.version-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.version-item:last-child {
+    border-bottom: none;
+}
+
+.version-meta {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Form styling */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid var(--border-color);
+    border-radius: 4px;
+    transition: border-color 0.3s;
+}
+
+.form-control:focus {
+    border-color: var(--secondary-color);
+    outline: none;
+}
+
+/* Add spacing between sections */
+.comments-section,
+.page-history {
+    margin-top: 2rem;
+}
+
+.add-comment-section {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+}
+
 .footer {
     background: var(--header-bg);
     color: white;
     padding: 1.2rem 0;
     margin-top: 4rem;
+    margin-left:0;
+    margin-right:0;
     border-top: 3px solid var(--secondary-color);
     flex-shrink: 0; 
     width: 100%;
