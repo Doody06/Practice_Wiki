@@ -64,6 +64,7 @@ def edit_profile():
     if form.validate_on_submit():
         user.username = form.username.data
         user.email = form.email.data
+        user.description = form.description.data
         if form.password.data:
             user.set_password(form.password.data)
         db.session.commit()
@@ -76,4 +77,18 @@ def edit_profile():
                     flash(f'Error in {getattr(form, field).label.text}: {error}', 'danger')
     return render_template('edit_profile.html', form=form, user=user)
        
-    
+# @bp.route('/edit_description', methods=['GET', 'POST'])
+# @login_required
+# def edit_description():
+#     from app import cache
+#     user = current_user
+#     description = request.form.get('description')
+#     if request.method == 'POST':
+#         if description and len(description) <= 300:
+#             user.description = description
+#             db.session.commit()
+#             print("Description updated successfully")
+#         else:
+#             flash('Description must be 300 characters or less.', 'danger')
+#     cache.clear()
+#     return redirect(url_for('user.profile', username=user.username))

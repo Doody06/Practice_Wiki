@@ -138,11 +138,16 @@ def profile(username):
     user_id = User.query.filter_by(username=username).first_or_404().id
     user = User.query.get(user_id)
     user_suggestions = Suggestion.query.filter_by(suggested_by_id=user_id).all()
-    user_comments = Comment.query.filter_by(author_id=user_id).all() 
+    user_comments = Comment.query.filter_by(author_id=user_id).all()
+    user_description = User.query.get(user_id).description
+    
+    if User.query.filter_by(id=user_id).first().description:
+        user_description = User.query.filter_by(id=user_id).first().description
+
     if user.is_admin:
         edited_pages = PageVersion.query.filter_by(author_id=user_id).all()  
-        return render_template('profile.html', user=current_user, suggestions=user_suggestions or None, comments=user_comments or None, edited_pages=edited_pages or None)
-    return render_template('profile.html', user=current_user, suggestions=user_suggestions or None, comments=user_comments or None)
+        return render_template('profile.html', user=current_user, suggestions=user_suggestions or None, comments=user_comments or None, edited_pages=edited_pages or None, description=user_description or None)
+    return render_template('profile.html', user=current_user, suggestions=user_suggestions or None, comments=user_comments or None, description=user_description or None)
 
 @bp.route('/random_page')
 def random_page():

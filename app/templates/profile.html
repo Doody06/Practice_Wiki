@@ -6,6 +6,10 @@
 <div class="container mt-5">
     <h1>{{ user.username }}'s Profile</h1>
     <p>Email: {{ user.email }}</p> <!-- hide email in the future -->
+    <div class="mb-3">
+    <h3>Description:</h3>
+    <p>{{ description or "No description provided." }}</p>
+    </div>
 </div>
 <div class="container mt-5">
     <a href="{{ url_for('auth.edit_profile') }}" class="btn btn-primary">Edit Profile</a>
