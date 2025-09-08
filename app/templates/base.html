@@ -43,10 +43,12 @@
           {% if category == 'danger' %}
             <div style="background-color:#ffdddd; color:#a94442; border-bottom:1px solid #e0b4b4; padding:10px; text-align:center;">
               <span>{{ message }}</span>
+              <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close" style="background:none; border:none; font-size:16px; float:right; cursor:pointer;">&times;</button>
             </div>
           {% else %}
             <div style="background-color:#ddffdd; color:#256029; border-bottom:1px solid #b4e0b4; padding:10px; text-align:center;">
               <span>{{ message }}</span>
+                <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close" style="background:none; border:none; font-size:16px; float:right; cursor:pointer;" onclick="this.parentElement.style.display='none';">&times;</button>
             </div>
           {% endif %}
         {% endfor %}
