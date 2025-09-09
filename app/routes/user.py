@@ -143,5 +143,15 @@ def profile(username):
         edited_pages = PageVersion.query.filter_by(author_id=user_id).all()      
     return render_template('profile.html', user=current_user, suggestions=user_suggestions, comments=user_comments, edited_pages=edited_pages)
 
+@bp.route('/search_users', methods=['GET'])
+def search_users():  
+    if request.method == 'GET':
+        query = request.args.get('query', '')
+        searched_user = Page.query.filter(Users.username.ilike(f'%{query}%')).all() if query else None
+        return render_template('search_users.html', query=query, searched_user = searched_user)
+    return render_template('search_users.html')
 
 
+    # if request.method == 'GET'
+    #     searched_user = request.args.get('searched_user')
+    # return render_template('search_users.html', searched_user = searched_user)
