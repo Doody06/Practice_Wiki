@@ -45,11 +45,11 @@ def search():
         return render_template('search.html', query=query, pages=pages)
     return render_template('search.html')
 
-@bp.route('/all_pages')
+@bp.route('/all_pages', methods=['GET'])
 @cache.cached(timeout=10, query_string=True)
 def all_pages():
     from app.models import Page
-    pages = Page.query.all()
+    pages = Page.query.paginate(page=request.args.get('page', 1, type=int), per_page=5)
     if current_user.is_authenticated:
         is_admin = current_user.is_admin
     else:
@@ -99,7 +99,7 @@ def suggest_page_edit(slug):
     
     if not current_user.is_authenticated:
         flash('You must be logged in to suggest edits.', 'error')
-        return redirect(url_for('user.view_page', slug=slug))
+        return redirect(url_for('auth.login'))
     
     if request.method == 'POST':
         if form.validate_on_submit():
@@ -138,11 +138,18 @@ def profile(username):
     user_id = User.query.filter_by(username=username).first_or_404().id
     user = User.query.get(user_id)
     user_suggestions = Suggestion.query.filter_by(suggested_by_id=user_id).all()
-    user_comments = Comment.query.filter_by(author_id=user_id).all() 
-    if user.is_admin:
-        edited_pages = PageVersion.query.filter_by(author_id=user_id).all()      
-    return render_template('profile.html', user=current_user, suggestions=user_suggestions, comments=user_comments, edited_pages=edited_pages)
+    user_comments = Comment.query.filter_by(author_id=user_id).all()
+    user_description = User.query.get(user_id).description
+    
+    if User.query.filter_by(id=user_id).first().description:
+        user_description = User.query.filter_by(id=user_id).first().description
 
+
+    if user.is_admin:
+        edited_pages = PageVersion.query.filter_by(author_id=user_id).all()  
+        return render_template('profile.html', user=current_user, suggestions=user_suggestions or None, comments=user_comments or None, edited_pages=edited_pages or None, description=user_description or None)
+    return render_template('profile.html', user=current_user, suggestions=user_suggestions or None, comments=user_comments or None, description=user_description or None)
+=======
 @bp.route('/search_users', methods=['GET'])
 def search_users():  
     if request.method == 'GET':
@@ -152,6 +159,30 @@ def search_users():
     return render_template('search_users.html')
 
 
+@bp.route('/random_page')
+def random_page():
+    from app.models import Page
+    import random
+    page_count = Page.query.count()
+    if page_count == 0:
+        flash('No pages available.', 'error')
+        return redirect(url_for('user.home'))
+    for i in range(page_count):
+        random_offset = random.randint(0, page_count - 1)
+        random_page = Page.query.offset(random_offset).first()
+        if random_page:
+            return redirect(url_for('user.view_page', slug=random_page.slug))
+        
+@bp.route('/about')
+def about():
+    return render_template('about.html')
+
+
+@bp.route('/contact')
+def contact():
+    return render_template('contact.html')
+=======
     # if request.method == 'GET'
     #     searched_user = request.args.get('searched_user')
     # return render_template('search_users.html', searched_user = searched_user)
+

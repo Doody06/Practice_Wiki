@@ -9,29 +9,32 @@ bp = Blueprint('auth', __name__)
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     #temporary login my account for debugging
-   user = User.query.filter_by(username='doody').first()
-   login_user(user)
-   return redirect(url_for('admin.dashboard'))
-    #normal login logic
-    # form = LoginForm()
-    # if form.validate_on_submit():
-    #     user = User.query.filter_by(username=form.username.data).first()
-    #     if user and User.check_password(user, form.password.data):
-    #         login_user(user)
-    #         flash('Login successful', 'success')
-    #         if user.is_admin:
-    #             return redirect(url_for('admin.dashboard'))
-    #         else:
-    #             return redirect(url_for('home'))
-    #     else:
-    #         flash('Invalid username or password', 'danger')
-    # return render_template('login.html', form=form)
+    #user = User.query.filter_by(username='doody').first()
+    #login_user(user)
+    #return redirect(url_for('admin.dashboard'))
+    # normal login logic
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user and User.check_password(user, form.password.data):
+            login_user(user)
+            flash('Login successful', 'success')
+            if user.is_admin:
+                return redirect(url_for('admin.dashboard'))
+            else:
+                return redirect(url_for('user.home'))
+        else:
+            flash('Invalid username or password', 'danger')
+    return render_template('login.html', form=form)
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
     if form.validate_on_submit(): #learn how this works
         user = User(username=form.username.data, email=form.email.data)
+        if User.query.filter_by(username=form.username.data).first():
+            flash('Username already taken. Please choose a different one.', 'danger')
+            return render_template('register.html', form=form)
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
@@ -47,7 +50,9 @@ def register():
 @bp.route('/logout') 
 @login_required  
 def logout():
+    from app import cache
     logout_user()
+    cache.clear()
     return redirect(url_for('user.home'))  
 
 @bp.route('/edit_profile', methods=['GET', 'POST'])
@@ -59,6 +64,7 @@ def edit_profile():
     if form.validate_on_submit():
         user.username = form.username.data
         user.email = form.email.data
+        user.description = form.description.data
         if form.password.data:
             user.set_password(form.password.data)
         db.session.commit()
@@ -71,4 +77,18 @@ def edit_profile():
                     flash(f'Error in {getattr(form, field).label.text}: {error}', 'danger')
     return render_template('edit_profile.html', form=form, user=user)
        
-    
+# @bp.route('/edit_description', methods=['GET', 'POST'])
+# @login_required
+# def edit_description():
+#     from app import cache
+#     user = current_user
+#     description = request.form.get('description')
+#     if request.method == 'POST':
+#         if description and len(description) <= 300:
+#             user.description = description
+#             db.session.commit()
+#             print("Description updated successfully")
+#         else:
+#             flash('Description must be 300 characters or less.', 'danger')
+#     cache.clear()
+#     return redirect(url_for('user.profile', username=user.username))

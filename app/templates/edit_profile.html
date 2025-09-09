@@ -18,22 +18,15 @@
         <div class="mb-3">
             <label for="password" class="form-label">Password</label>
             <input type="password" class="form-control" id="password" name="password" placeholder="Leave blank to keep current password">
-        </div>
+        </div>      
         <div class="mb-3">
             <label for="confirm_password" class="form-label">Confirm Password</label>
-            <input type="password" class="form-control" id="confirm_password" name="confirm_password">
-        <button type="submit" class="btn btn-primary">Change profile information</button>
+            <input type="password" class="form-control" id="confirm_password" name="confirm_password">      
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter a brief description about yourself">{{ user.description }}</textarea>
         </form>
+        <button type="submit" class="btn btn-primary">Change profile information</button>
 </div>
-<div>
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    {% for messages in messages %}
-    <div class="alert alert-info mt-3">
-        {{ messages }}
-        {% endfor %}
-        </div>
-    {% endif %}
-    {% endwith %}
-</div>
+
 {% endblock %}

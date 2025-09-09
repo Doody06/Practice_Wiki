@@ -2,23 +2,47 @@
 {% block title %}All Pages{% endblock %}
 
 {% block content %}
-    <h1>All Pages</h1>
-    <ul>
-        {% for page in pages %}
-            <li>
-                <a href="{{ url_for('user.view_page', slug=page.slug) }}">{{ page.title }}</a>
-                {% if is_admin == True %}
-                    <a href="{{ url_for('admin.edit_page', slug=page.slug) }}">Edit</a>
-                    <form id="delete-form-{{ page.slug }}" action="{{ url_for('admin.delete_page', slug=page.slug) }}" method="post" style="display:inline;">
-                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                    </form>
-                {% endif %}
-            </li>
-        {% else %}
-            <li>No pages found.</li>
-        {% endfor %}
-    </ul>
+<div class="container">
+    <div class="card">
+        <h1 class="page-title">All Pages</h1>
+        <div class="pages-list">
+            {% for page in pages %}
+                <div class="page-item">
+                    <div class="page-title-link">
+                        <a href="{{ url_for('user.view_page', slug=page.slug) }}">{{ page.title }}</a>
+                    </div>
+                    {% if is_admin == True %}
+                        <div class="page-actions">
+                            <a href="{{ url_for('admin.edit_page', slug=page.slug) }}" class="btn btn-outline btn-sm">Edit</a>
+                            <form id="delete-form-{{ page.slug }}" action="{{ url_for('admin.delete_page', slug=page.slug) }}" method="post" style="display:inline;">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button type="submit" class="btn btn-outline btn-sm" onclick="return confirm('Are you sure you want to delete this page?')">
+                                    <span class="text-subtle">Delete</span>
+                                </button>
+                            </form>
+                        </div>
+                    {% endif %}
+                </div>
+            {% else %}
+                <div class="no-pages">No pages found.</div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+<div class="container mt-5">
+    <div class="pagination">
+        {% if pages.has_prev %}
+            <a href="?page={{ pages.prev_num }}" class="btn btn-primary btn-sm">Previous</a>
+        {% endif %}
+        <span class="mx-2">Page {{ pages.page }} of {{ pages.pages }}</span>
+        {% if pages.has_next %}
+            <a href="?page={{ pages.next_num }}" class="btn btn-primary btn-sm">Next</a>
+        {% endif %}
+    </div>
+</div>
+
 {% endblock %}
 
 {% block scripts %}

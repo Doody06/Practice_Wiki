@@ -5,7 +5,7 @@ import markdown2
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=3, max=25)])
-    password = StringField('Password', validators=[DataRequired(), Length(min=6, max=50)])
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=6, max=50)])
     submit = SubmitField('Login')
 
 class RegistrationForm(FlaskForm):
@@ -20,6 +20,7 @@ class EditProfileForm(FlaskForm):
     email = EmailField('Email', validators=[DataRequired(), Email(),])
     password = PasswordField('Password', validators=[Optional(), Length(min=6, max=50)])
     confirm_password = PasswordField('Confirm Password', validators=[Optional()])
+    description = TextAreaField('Description', validators=[Optional(), Length(max=300)])
     
     def validate_confirm_password(form, field):
         if form.password.data:
@@ -37,4 +38,3 @@ class NewPageForm(FlaskForm):
 class CommentForm(FlaskForm):
     content = StringField('Comment', validators=[DataRequired()])
     submit = SubmitField('Post Comment')
-    

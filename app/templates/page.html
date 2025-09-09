@@ -1,64 +1,87 @@
 {% extends "base.html" %}
 
-{% block title %}{{ page_title }}{% endblock %}
+{% block title %}{{ page.title }}{% endblock %}
 
 {% block content %}
-    <h1>{{ page.title }}</h1>
-    <div class="markdown-content">
-        {{ content | safe }}
-    </div>
-    <hr>
-    <div class="metadata small-text">
-        <p>Last edited by: {{ page.author }}</p>
-        <p>Last edited on: {{ page.updated_at }}</p>
-    </div>
-    <div class="suggest-edit">
-        <form action="{{ url_for('user.suggest_page_edit', slug=page.slug) }}" method="get">
-            <button type="submit">Suggest an Edit</button>
-        </form>
-    </div>
-    <div class="small-text">
-        <h2>Comments</h2>
-        {% if comments %}
-            <ul>
-                {% for comment in comments %}
-                    <li>{{ comment.content }} - <em>by {{ comment.author }} on {{ comment.created_at }}</em></li>
-                    {% if is_admin %}
-                    <form id="delete-form-{{ comment.id }}" action="{{ url_for('admin.delete_comment', comment_id=comment.id) }}" method="post" style="display:inline;">
-                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                    </form>
-                    {% endif %}
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>No comments yet, be the first to comment?</p>
-        {% endif %}
-    </div>
-    <div class="container mt-5">
-        <h2>Add a comment</h2>
-        <form action="{{ url_for('user.comment_on_page', slug=page.slug) }}" method="post">
-            {{form.hidden_tag()}}
-            <div class="mb-3">
-                <label for="content" class="form-label">Comment</label>
-                {{ form.content(class="form-control", rows=3, placeholder="Enter your comment here") }}
+<div class="container">
+    <div class="wiki-page">
+        <div class="page-header card">
+            <h1>{{ page.title }}</h1>
+            <div class="page-actions">
+                <form action="{{ url_for('user.suggest_page_edit', slug=page.slug) }}" method="get" style="display: inline;">
+                    <button type="submit" class="btn btn-primary">Suggest an Edit</button>
+                </form>
             </div>
-            <button type="submit" class="btn btn-primary mt-2">Submit</button>
-        </form>
+        </div>
+
+        <div class="markdown-content card">
+            {{ content | safe }}
+        </div>
+
+        <div class="metadata card">
+            <div class="metadata-item">
+                <span class="metadata-label">Last edited by:</span>
+                <span class="metadata-value">{{ page.author.username }}</span>
+            </div>
+            <div class="metadata-item">
+                <span class="metadata-label">Last edited on:</span>
+                <span class="metadata-value">{{ page.updated_at }}</span>
+            </div>
+        </div>
+
+        <div class="comments-section card">
+            <h2>Comments</h2>
+            {% if comments %}
+                <ul class="comments-list">
+                    {% for comment in comments %}
+                        <li class="comment-item">
+                            <div class="comment-content">
+                                {{ comment.content }}
+                                <div class="comment-meta">
+                                    <em>by {{ comment.author.username }} on {{ comment.created_at }}</em>
+                                    {% if is_admin %}
+                                        <form id="delete-form-{{ comment.id }}" action="{{ url_for('admin.delete_comment', comment_id=comment.id) }}" method="post" style="display:inline;">
+                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                            <button type="submit" class="btn btn-outline btn-sm">Delete</button>
+                                        </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No comments yet, be the first to comment?</p>
+            {% endif %}
+
+            <div class="add-comment-section">
+                <h3>Add a comment</h3>
+                <form action="{{ url_for('user.comment_on_page', slug=page.slug) }}" method="post">
+                    {{form.hidden_tag()}}
+                    <div class="form-group">
+                        {{ form.content(class="form-control", rows=3, placeholder="Enter your comment here") }}
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="page-history card">
+            <h2>Page History</h2>
+            {% if page_versions %}
+                <ul class="version-list">
+                    {% for version in page_versions %}
+                        <li class="version-item">
+                            <strong>{{ version.title }}</strong>
+                            <span class="version-meta">by {{ version.author.username }} on {{ version.created_at }}</span>
+                            <a href="{{ url_for('user.view_page_version', id=version.id) }}" class="btn btn-outline btn-sm">View</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No history available for this page.</p>
+            {% endif %}
+        </div>
     </div>
-    <div class="container mt-5">
-        <h2>Page History</h2>
-        {% if page_versions %}
-            <ul>
-                {% for version in page_versions %}
-                    <li>
-                        <strong>{{ version.title }}</strong> - {{ version.author }} on {{ version.created_at }}
-                        <a href="{{ url_for('user.view_page_version', id=version.id) }}">View</a>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>No history available for this page.</p>
-        {% endif %}
-    </div>
+</div>
 {% endblock %}
