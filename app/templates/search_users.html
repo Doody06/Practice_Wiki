@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}User search Results{% endblock %}
+
+{% block content %}
+    <h1>Search Results for "{{ query }}"</h1>
+    {% if searched_users %}
+        <ul>
+            {% for searched_user in searched_users %}
+                <li>
+                    <a href="{{ url_for('user.view_profile', username=user.username) }}">{{ searched_user.username }}</a>
+                    <p class="small-text">{{ searched_user.username }}</p>
+                    {% endfor %}
+    {% else %}
+            <p>No users found matching your search query.</p>
+                        {% endif %}
+                            {% endblock %}

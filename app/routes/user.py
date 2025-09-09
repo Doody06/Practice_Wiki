@@ -144,10 +144,20 @@ def profile(username):
     if User.query.filter_by(id=user_id).first().description:
         user_description = User.query.filter_by(id=user_id).first().description
 
+
     if user.is_admin:
         edited_pages = PageVersion.query.filter_by(author_id=user_id).all()  
         return render_template('profile.html', user=current_user, suggestions=user_suggestions or None, comments=user_comments or None, edited_pages=edited_pages or None, description=user_description or None)
     return render_template('profile.html', user=current_user, suggestions=user_suggestions or None, comments=user_comments or None, description=user_description or None)
+=======
+@bp.route('/search_users', methods=['GET'])
+def search_users():  
+    if request.method == 'GET':
+        query = request.args.get('query', '')
+        searched_user = Page.query.filter(Users.username.ilike(f'%{query}%')).all() if query else None
+        return render_template('search_users.html', query=query, searched_user = searched_user)
+    return render_template('search_users.html')
+
 
 @bp.route('/random_page')
 def random_page():
@@ -167,6 +177,12 @@ def random_page():
 def about():
     return render_template('about.html')
 
+
 @bp.route('/contact')
 def contact():
     return render_template('contact.html')
+=======
+    # if request.method == 'GET'
+    #     searched_user = request.args.get('searched_user')
+    # return render_template('search_users.html', searched_user = searched_user)
+
